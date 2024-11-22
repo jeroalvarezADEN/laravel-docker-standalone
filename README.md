@@ -4,8 +4,6 @@
 This project is a standalone Laravel application configured to run inside a Docker container. The exercise involves setting up a Laravel environment, managing migrations, and installing necessary packages for the project. It includes creating resources, managing data seeding, and running tests.
 
 **Project created by:** Jerónimo Alvarez  
-**Access the server:** [Server Link]()
-**Default user** mail:admin@admin.com pw:admin
 
 ## Guide
 
