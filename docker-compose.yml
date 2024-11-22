@@ -31,7 +31,6 @@ services:
       - laravel-network
     volumes:
       - ./project:/app
-    user: "${UID}:${GID}"
 
 networks:
   laravel-network:
