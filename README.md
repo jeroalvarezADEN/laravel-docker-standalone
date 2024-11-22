@@ -1,83 +1,73 @@
-# laravel-docker-standalone
+# Laravel Docker Standalone
 
-## Local workspace
+## Overview
+This project is a standalone Laravel application configured to run inside a Docker container. The exercise involves setting up a Laravel environment, managing migrations, and installing necessary packages for the project. It includes creating resources, managing data seeding, and running tests.
 
-### Starting
+**Project created by:** Jerónimo Alvarez  
+**Access the server:** [Server Link](http://example.com) (replace with actual link)
+**Default user** mail:admin@admin.com pw:admin
 
-````bash
-docker network create laravel-network
+## Guide
 
-docker volume create --name mariadb_data
-docker run -d --name mariadb \
-    --env ALLOW_EMPTY_PASSWORD=yes \
-    --env MARIADB_USER=bn_myapp \
-    --env MARIADB_DATABASE=bitnami_myapp \
-    --network laravel-network \
-    --volume mariadb_data:/bitnami/mariadb \
-    bitnami/mariadb:latest
+### Container Management
+- **Build container:**  
+  `docker-compose up --build -d`
+- **Stop container:**  
+  `docker stop laravel`
+- **Delete container:**  
+  `docker rm laravel`
+- **Delete and down all yml:**  
+  `docker-compose down`
+- **Sing into Laravel container:**  
+  `docker exec -it laravel bash`
 
-docker build -t laravel .
+### Docker Volume Management
+- **List volumes:**  
+  `docker volume ls`
+- **Delete volume:**  
+  `docker volume rm laravel-docker-standalone_mariadb_data`
 
-docker run -it \
-    --name laravel \
-    -p 8000:8000 \
-    --env DB_HOST=mariadb \
-    --env DB_PORT=3306 \
-    --env DB_USERNAME=bn_myapp \
-    --env DB_DATABASE=bitnami_myapp \
-    --network laravel-network \
-    --volume ${PWD}/project:/app \
-    laravel
-````
+### Laravel Commands
+- **Create migrations:**  
+  `php artisan make:migration create_customers_table`
+- **Update migrations:**  
+  `php artisan make:migration add_custom_fields_to_customers_table --table=customers`
+- **Execute Seeders:**  
+  `php artisan db:seed --class=CustomerSeeder`
 
-### Access to app bash
+### Composer & Filament Setup
+- **Install Composer dependencies:**  
+  `composer install`
+- **Install Filament Panel:**  
+  `composer require filament/filament:"^3.2" -W`
+- **Install Filament resources:**  
+  `php artisan filament:install --panels`
+- **Create Filament User:**  
+  `php artisan make:filament-user`
+- **Create Filament Resource (Customer):**  
+  `php artisan make:filament-resource Customer --generate`
+- **Create Filament Relation Manager (Device):**  
+  `php artisan make:filament-relation-manager DeviceRelationManager`
 
-````bash
-docker exec -it laravel bash
-````
+### Custom Commands & Testing
+- **Create custom command (List Customers with Devices):**  
+  `php artisan make:command ListCustomersWithDevices`
+- **Create test for Customers:**  
+  `php artisan make:test CustumerTest`
+- **Run tests:**  
+  `php artisan test`
 
-If you like to run simultaneously the app and the bash, you need two terminals; 
-or run the app in background with `docker run -d ...` and then run the bash with `docker exec -it laravel bash`.
+## Steps to Run Project
+1. Build and run the container:  
+   `docker-compose up --build -d`
+2. Access the Laravel container:  
+   `docker exec -it laravel bash`
+3. Run migrations:  
+   `php artisan migrate`
+4. Install Composer dependencies:  
+   `composer install`
+5. Install Filament Panel:  
+   `composer require filament/filament:"^3.2" -W`
+6. Seed the database:  
+   `php artisan db:seed --class=CustomerSeeder`
 
-
-## Extending the image
-
-1. Create a new `Dockerfile` in your project with `FROM bitnami/laravel:latest`.
-2. Run `docker build -t laravel .` to build the new image.
-3. Run `docker run ...` replacing bitnami image by just `laravel`.
-
-
-## Develop
-
-**Q: How to upgrade laravel app on this repository?**
-
-**A:** Just remove `project` folder and re-run `docker run -it ...` again. 
-
-
-## Develop
-
-### Guide
-* Build container: docker-compose up --build -d
-* Create migrations: php artisan make:migration create_customers_table
-* Update migrations: php artisan make:migration add_custom_fields_to_customers_table --table=customers
-* Sing to laravel container: docker exec -it laravel bash
-* Execute Sedders: php artisan db:seed --class=CustomerSeeder
-* Stop containe: docker stop laravel
-* Delete container: docker rm laravel
-* Delente and down al yml: docker-compose down
-* List volume: docker volume ls
-* Delete volume: docker volume rm laravel-docker-standalone_mariadb_data
-
-Steap after buil
-1. composer install
-2. php artisan migrate
-3. composer require filament/filament:"^3.2" -W
-4. php artisan filament:install --panels
-5. php artisan make:filament-user
-7. php artisan make:filament-resource Customer --generate
-8. php artisan make:filament-relation-manager DeviceRelationManager
-
-
-steaps to build:
-composer install 
-composer require filament/filament:"^3.2" -W

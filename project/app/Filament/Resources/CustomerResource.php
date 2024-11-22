@@ -33,6 +33,9 @@ class CustomerResource extends Resource
                     ->minValue(1)
                     ->maxValue(5)
                     ->placeholder('Enter level between 1 and 5'),
+                Forms\Components\TextInput::make('address')
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 

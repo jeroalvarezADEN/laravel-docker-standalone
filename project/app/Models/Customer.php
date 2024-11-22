@@ -18,6 +18,7 @@ class Customer extends Model
     protected $fillable = [
         'name',
         'level',
+        'address'
     ];
 
     public function devices(): HasMany
